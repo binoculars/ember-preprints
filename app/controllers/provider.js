@@ -5,8 +5,6 @@ export default Ember.Controller.extend({
     provider: null,
 
     providerChanged: Ember.observer('provider', function() {
-        console.log(this.get('provider'));
-
         this.set('brand.name', this.get('provider'));
     }),
 });
