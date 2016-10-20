@@ -1,0 +1,89 @@
+/* VIEW page */
+
+.dark-overlay-header-background {
+    background: url("img/dark-overlay.png") top center;
+}
+#view-page {
+    background-color: #FCFCFC;
+    font-family : 'Open Sans', Helvetica, sans-serif;
+    .osf-box-lt {
+        background-color: #F3F5F5;
+    }
+    .header-row {
+        color: #ffffff;
+        padding-top: 90px;
+    }
+    .view-authors {
+        color: #337ab7;
+        a {
+            color: #6dd1de;
+        }
+    }
+    .round-btn {
+        border-radius: 25px;
+        background-color: #4c4c4c;
+        color: white;
+    }
+    #mfr-col {
+        position: relative;
+        .expand-mfr-carrot {
+            position: absolute;
+            right: 0;
+            top: 0;
+            color: #888888;
+            background: 0;
+            border: 0;
+            outline: none;
+        }
+    }
+    .abstract {
+        white-space: pre-line;
+    }
+}
+
+//For Supplementary File Widget
+#preprint-file-view {
+    section {
+        position: relative;
+        button {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            &.left {
+                left: 0;
+            }
+            &.right {
+                right: 0;
+            }
+        }
+        .file-selected-arrow {
+            color: #578ca2;
+            position: absolute;
+            top: -20px;
+            font-size: xx-large;
+            margin: 0 auto;
+        }
+    }
+
+    .osf-box{
+        height: 100px;
+        width: 100%;
+        background-color: white;
+    }
+    .box{
+        background-color: white;
+        text-align: center;
+        cursor: pointer;
+        &.selected{
+            background-color: #F3F5F5;
+        }
+        &:hover {
+            border-color: #337AB7;
+        }
+    }
+    .show-more-button {
+        color: #F3F5F5;
+        background: #D8D8D8;
+        font-size: 2em;
+    }
+}

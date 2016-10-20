@@ -47,8 +47,12 @@ module.exports = function(environment) {
                     id: process.env.GOOGLE_ANALYTICS_ID
                 }
             },
-
-        ]
+        ],
+        brands: [
+            'engrXiv',
+            'PsyArXiv',
+            'SocArXiv'
+        ],
     };
 
     if (environment === 'development') {

@@ -1,16 +1,31 @@
+'use strict';
 /*jshint node:true*/
 /* global require, module */
-var path = require('path');
-var EmberApp = require('ember-cli/lib/broccoli/ember-app');
-
+const fs = require('fs');
+const path = require('path');
+const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 const nonCdnEnvironments = ['development', 'test'];
 
 module.exports = function(defaults) {
     var config = require('./config/environment')(process.env.EMBER_ENV);
-    const useCdn = (nonCdnEnvironments.indexOf(process.env.EMBER_ENV) === -1);
+    const useCdn = !nonCdnEnvironments.includes(process.env.EMBER_ENV);
+
+    const css = {
+        'app': '/assets/preprint-service.css'
+    };
+
+    const brands = fs.readdirSync('./app/styles/brands');
+
+    for (let brand of brands) {
+        if (/^_/.test(item))
+            continue;
+
+        brand = brand.replace(/\..*$/, '');
+        css[`brands/${brand}`] = `/assets/css/${brand}.css`;
+    }
 
     // Reference: https://github.com/travis-ci/travis-web/blob/master/ember-cli-build.js
-    var app = new EmberApp(defaults, {
+    const app = new EmberApp(defaults, {
         sourcemaps: {
             enabled: true,
             extensions: ['js']
@@ -25,6 +40,13 @@ module.exports = function(defaults) {
         'ember-bootstrap': {
             importBootstrapCSS: false
         },
+
+        outputPaths: {
+            app: {
+                css
+            }
+        },
+
         sassOptions: {
             includePaths: [
                 'node_modules/ember-osf/addon/styles',

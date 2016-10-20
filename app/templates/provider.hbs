@@ -1,0 +1,13 @@
+{{title (concat brand.name ' Preprints') separator=' | '}}
+
+{{#if brand.stylesheet}}
+    <style>
+        @import url('{{brand.stylesheet}}');
+    </style>
+{{/if}}
+
+{{branded-navbar brand=brand}}
+
+{{outlet}}
+
+{{branded-footer brand=brand}}
