@@ -1,13 +1,11 @@
 import Ember from 'ember';
 
 export default Ember.Service.extend({
-    base: 'default',
-    name: null,
-    isProvider: false,
-    // the property used as a reference for styles
+    id: null,
 
-    stylesheet: Ember.computed('name', function() {
-        return `/preprints/assets/css/${this.get('name').toLowerCase()}.css`
+    isProvider: Ember.computed.bool('id'),
+
+    stylesheet: Ember.computed('id', function() {
+        return `/preprints/assets/css/${this.get('id').toLowerCase()}.css`
     }),
-
 });

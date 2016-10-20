@@ -8,7 +8,7 @@ const nonCdnEnvironments = ['development', 'test'];
 
 module.exports = function(defaults) {
     var config = require('./config/environment')(process.env.EMBER_ENV);
-    const useCdn = !nonCdnEnvironments.includes(process.env.EMBER_ENV);
+    const useCdn = !~nonCdnEnvironments.indexOf(process.env.EMBER_ENV);
 
     const css = {
         'app': '/assets/preprint-service.css'
@@ -17,7 +17,7 @@ module.exports = function(defaults) {
     const brands = fs.readdirSync('./app/styles/brands');
 
     for (let brand of brands) {
-        if (/^_/.test(item))
+        if (/^_/.test(brand))
             continue;
 
         brand = brand.replace(/\..*$/, '');

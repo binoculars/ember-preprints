@@ -3,7 +3,7 @@
         <div class="navbar-header">
             {{#link-to "provider.index" class="navbar-brand" invokeAction=(action "click" "link" "Navbar - Brand")~}}
                 <span class="navbar-image"></span>
-                {{brand.name}} Preprints
+                {{model.name}} Preprints {{model.logo_path}}
             {{~/link-to}}
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#preprint-navbar-links">
                 <span class="sr-only">{{!t "components.preprint-navbar.toggle"}}</span>
