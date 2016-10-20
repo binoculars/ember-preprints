@@ -25,6 +25,7 @@ function isHyperLink(link) {
 }
 
 export default Ember.Component.extend(Analytics, {
+    theme: Ember.inject.service(),
     // TODO: either remove or add functionality to info icon on "Refine your search panel"
 
     // Many pieces taken from: https://github.com/CenterForOpenScience/ember-share/blob/develop/app/controllers/discover.js

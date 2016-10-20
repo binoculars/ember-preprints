@@ -11,6 +11,10 @@
     .preprint-header {
         background-image: none;
         background-color: $theme-color-1;
+
+        .preprint-brand {
+            height: 140px;
+        }
     }
 
     .navbar-image {
