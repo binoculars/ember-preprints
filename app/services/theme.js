@@ -6,6 +6,6 @@ export default Ember.Service.extend({
     isProvider: Ember.computed.bool('id'),
 
     stylesheet: Ember.computed('id', function() {
-        return `/preprints/assets/css/${this.get('id').toLowerCase()}.css`
+        return `/preprints/assets/css/${this.get('id').toLowerCase()}.css`;
     }),
 });
