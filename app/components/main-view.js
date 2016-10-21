@@ -25,6 +25,7 @@ const getTotalPayload = JSON.stringify({
 });
 
 export default Ember.Component.extend(Analytics, {
+    theme: Ember.inject.service(),
     sharePreprintsTotal: null,
     init() {
         this._super(...arguments);
