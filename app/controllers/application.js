@@ -7,5 +7,5 @@ export default Ember.Controller.extend(OSFAgnosticAuthControllerMixin, {
     toast: Ember.inject.service(),
     theme: Ember.inject.service(),
 
-    signupUrl: `${config.OSF.url}login?` + Ember.$.param({campaign: config.PREPRINTS.campaign}),
+    signupUrl: `${config.OSF.url}register?` + Ember.$.param({campaign: config.PREPRINTS.campaign}),
 });
