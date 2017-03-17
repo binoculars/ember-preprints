@@ -4,7 +4,33 @@ import Analytics from '../mixins/analytics';
 
 import { elasticEscape } from '../utils/elastic-query';
 
-var getProvidersPayload = '{"from": 0,"query": {"bool": {"must": {"query_string": {"query": "*"}}, "filter": [{"term": {"types": "preprint"}}]}},"aggregations": {"sources": {"terms": {"field": "sources","size": 200}}}}';
+const getProvidersPayload = JSON.stringify({
+    from: 0,
+    query: {
+        bool: {
+            must: {
+                query_string: {
+                    query: '*'
+                }
+            },
+            filter: [
+                {
+                    term: {
+                        types: 'preprint'
+                    }
+                }
+            ]
+        }
+    },
+    aggregations: {
+        sources: {
+            terms: {
+                field: 'sources',
+                size: 200
+            }
+        }
+    }
+});
 
 const filterMap = {
     providers: 'sources',
@@ -40,7 +66,8 @@ export default Ember.Controller.extend(Analytics, {
         'bioRxiv',
         'Cogprints',
         'PeerJ',
-        'Research Papers in Economics'
+        'Research Papers in Economics',
+        'Preprints.org'
     ].map(item => item.toLowerCase()),
 
     page: 1,
@@ -101,46 +128,43 @@ export default Ember.Controller.extend(Analytics, {
                 .then(results => results.aggregations.sources.buckets)
         ])
             .then(([osfProviders, hits]) => {
-                // Get the whitelist and add the OSF Providers to it
-                const whiteList = this.get('whiteListedProviders')
-                    .concat(osfProviders
-                        .map(osfProvider => osfProvider.toLowerCase())
-                    );
-                // Filter out providers that are not on the whitelist
-                const providers = hits
-                    .filter(hit => whiteList.includes(hit.key.toLowerCase()));
-
-                // Add the OSF Providers that are not in SHARE
-                providers.push(
-                    ...osfProviders
-                    .filter(osfProvider => !providers
-                        .find(hit => hit.key.toLowerCase() === osfProvider.toLowerCase())
-                    )
-                    .map(key => ({
-                        key,
-                        doc_count: 0
-                    }))
-                );
-
-                // Sort the providers list add add OSF to the top
-                providers
-                    .sort((a, b) => a.key.toLowerCase() < b.key.toLowerCase() ? -1 : 1)
-                    .unshift(
-                        ...providers.splice(
-                            providers.findIndex(item => item.key === 'OSF'),
-                            1
-                        )
-                    );
-
                 if (!this.get('theme.isProvider')) {
+                    // Get the whitelist and add the OSF Providers to it
+                    const whiteList = this.get('whiteListedProviders')
+                        .concat(osfProviders
+                            .map(osfProvider => osfProvider.toLowerCase())
+                        );
+
+                    const providers = hits
+                        // Filter out providers that are not on the whitelist
+                        .filter(hit => whiteList.includes(hit.key.toLowerCase()))
+                        // Add in providers that don't have any results
+                        .concat(osfProviders
+                            .filter(osfProvider => !hits
+                                .find(({key}) => key.toLowerCase() === osfProvider.toLowerCase())
+                            )
+                            .map(key => ({
+                                key,
+                                doc_count: 0
+                            }))
+                        )
+                        // Sort by provider name
+                        .sort((a, b) => a.key.toLowerCase() < b.key.toLowerCase() ? -1 : 1)
+                        // Make OSF first
+                        .sort((a, b) => a.key === 'OSF' ? -1 : (b.key === 'OSF' ? 1 : 0));
+
                     this.set('otherProviders', providers);
                 } else {
-                    const filtered = providers.filter(
-                        item => item.key.toLowerCase() === this.get('theme.id').toLowerCase()
-                    );
+                    const name = this.get('theme.provider.name');
 
-                    this.set('otherProviders', filtered);
-                    this.get('activeFilters.providers').pushObject(filtered[0].key);
+                    const provider = hits.find(({key}) => key.toLowerCase() === name.toLowerCase()) ||
+                        {
+                            key: name,
+                            doc_count: 0
+                        };
+
+                    this.set('otherProviders', [provider]);
+                    this.get('activeFilters.providers').pushObject(providerName);
                 }
 
                 this.notifyPropertyChange('otherProviders');
